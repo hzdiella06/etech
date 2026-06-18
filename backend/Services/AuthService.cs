@@ -63,16 +63,33 @@ public class AuthService : IAuthService
 
     var token = GenerateToken(user);
 
-    return new AuthResponseDto
-    {
+    return new AuthResponseDto{
         Token = token,
         Email = user.Email ?? "",
         FullName = user.FullName
     };
 }
 
-    public Task<AuthResponseDto?> LoginAsync(LoginDto loginDto)
-    {
-        return Task.FromResult<AuthResponseDto?>(null);
+    public async Task<AuthResponseDto?> LoginAsync(LoginDto loginDto){
+    var user = await userManager.FindByEmailAsync(loginDto.Email);
+
+    if (user == null){
+        return null;
+    }
+
+    var passwordOk = await userManager.CheckPasswordAsync(user, loginDto.Password);
+
+    if (!passwordOk){
+        return null;
+    }
+
+    var token = GenerateToken(user);
+
+    return new AuthResponseDto
+        {
+            Token = token,
+            Email = user.Email ?? "",
+            FullName = user.FullName
+        };
     }
 }
