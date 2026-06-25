@@ -7,7 +7,7 @@ namespace backend.Data;
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
+        : base(options){
     }
+    public DbSet<JobApplication> JobApplications { get; set; }
 }
