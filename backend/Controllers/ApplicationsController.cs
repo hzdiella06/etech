@@ -3,12 +3,13 @@ using backend.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace backend.Controllers;
 
 [ApiController]
 [Route("api/applications")]
-[Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ApplicationsController : ControllerBase{
     private IJobApplicationService jobService;
 
@@ -43,7 +44,7 @@ public class ApplicationsController : ControllerBase{
     [HttpPost]
     public async Task<IActionResult> Create(CreateJobApplicationDto createDto){
         var userId = GetUserId();
-        
+       
         var result = await jobService.CreateAsync(createDto, userId);
         return Ok(result);
     }
@@ -57,7 +58,7 @@ public class ApplicationsController : ControllerBase{
         if(!updated){
             return NotFound();
         }
-        return Ok("updated successfully");
+        return Ok("application updated");
     }
 
     [HttpDelete("{id}")]
