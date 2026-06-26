@@ -3,7 +3,7 @@ using backend.DTOs;
 namespace backend.Interfaces;
 
 public interface IJobApplicationService{
-    Task<List<JobApplicationResponseDto>> GetAllAsync(string userId);
+    Task<List<JobApplicationResponseDto>> GetAllAsync(string userId, string? status, string? company);
     Task<JobApplicationResponseDto?> GetByIdAsync(int id, string userId);
     Task<JobApplicationResponseDto> CreateAsync(CreateJobApplicationDto createDto, string userId);
     Task<bool> UpdateAsync(int id, UpdateJobApplicationDto updateDto, string userId);

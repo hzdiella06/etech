@@ -12,8 +12,18 @@ public class JobApplicationService : IJobApplicationService{
         this.context = context;
     }
 
-    public async Task<List<JobApplicationResponseDto>> GetAllAsync(string userId){
-        var applications = await context.JobApplications.Where(a => a.UserId == userId).ToListAsync();
+    public async Task<List<JobApplicationResponseDto>> GetAllAsync(string userId, string? status, string? company){
+    var query = context.JobApplications.Where(a => a.UserId == userId);
+
+    if(!string.IsNullOrEmpty(status)){
+        query = query.Where(a => a.Status == status);
+    }
+
+    if(!string.IsNullOrEmpty(company)){
+        query = query.Where(a => a.CompanyName.Contains(company));
+    }
+
+    var applications = await query.ToListAsync();
 
         var result = applications.Select(a => new JobApplicationResponseDto
         {

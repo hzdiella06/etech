@@ -22,10 +22,10 @@ public class ApplicationsController : ControllerBase{
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(){
+    public async Task<IActionResult> GetAll(string? status, string? company){
         var userId = GetUserId();
-        
-        var result = await jobService.GetAllAsync(userId);
+          
+        var result = await jobService.GetAllAsync(userId, status, company);
         return Ok(result);
     }
 
